@@ -4,13 +4,10 @@ import lk.ccs.ipldashboard.model.Match;
 import lk.ccs.ipldashboard.model.Team;
 import lk.ccs.ipldashboard.repository.IMatchRepository;
 import lk.ccs.ipldashboard.repository.ITeamRepository;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -32,4 +29,12 @@ public class TeamController {
         team.setMatches(matchRepository.findLatestMatchesByTeam(teamName,4));
         return team;
     }
+
+    @GetMapping("/teams/{teamName}/matches")
+        public List<Match> findTeamAllMatchesByYear(@PathVariable String teamName, @RequestParam int year){
+            Date startDate = Date.valueOf(LocalDate.of(year,1,1));
+            Date endDate = Date.valueOf(LocalDate.of(year+1,1,1));
+            return this.matchRepository.getMatchesByTeamBetweenDates(
+                    teamName,startDate,endDate);
+        }
 }

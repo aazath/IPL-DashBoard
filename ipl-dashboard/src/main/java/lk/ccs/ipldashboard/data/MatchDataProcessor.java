@@ -5,6 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 
+import java.sql.Date;
+import java.time.LocalDate;
+
 
 public class MatchDataProcessor implements ItemProcessor<MatchInput, Match> {
 
@@ -17,7 +20,7 @@ public class MatchDataProcessor implements ItemProcessor<MatchInput, Match> {
         match.setId(matchInput.getId());
         match.setCity(matchInput.getCity());
 
-        match.setDate(matchInput.getDate());
+        match.setDate(Date.valueOf(LocalDate.parse(matchInput.getDate())));
         match.setVenue(matchInput.getVenue());
         match.setPlayerOfMatch(matchInput.getPlayer_of_match());
 
